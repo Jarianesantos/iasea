@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond PSV 3300 - Monitoramento de Carbono com IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Dashboard Page -->
+    <div id="dashboard-page">
+        <div class="container">
+            <div class="header">
+                <div>
+                    <h1>{{ vessel.name }}</h1>
+                    <p>Monitoramento de Carbono com IA</p>
+                </div>
+                <div class="header-actions">
+                    <a href="#analytics-page" class="btn btn-primary" onclick="showPage('analytics')">Análises</a>
+                    <a href="#vessel-page" class="btn btn-primary" onclick="showPage('vessel')">Navio</a>
+                </div>
+            </div>
+
+            <div id="alerts-container" class="mb-6">
+                <div class="alert alert-success">
+                    <span>✅</span>
+                    <div>
+                        <p class="font-medium">Redução de 15% nas emissões este mês!</p>
+                        <p class="text-xs" style="color: #6b7280; margin-top: 0.25rem;">25 Jun 2026, 10:30</p>
+                    </div>
+                </div>
+                <div class="alert alert-warning">
+                    <span>⚠️</span>
+                    <div>
+                        <p class="font-medium">Consumo de combustível acima do esperado</p>
+                        <p class="text-xs" style="color: #6b7280; margin-top: 0.25rem;">25 Jun 2026, 09:15</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-4 mb-8">
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Emissões Anuais</div>
+                            <div class="card-value"><span id="annual-emissions">7100</span><span class="card-unit">tCO2</span></div>
+                        </div>
+                        <span class="trend-badge trend-positive">+15.0%</span>
+                    </div>
+                </div>
+                <div class="card gradient-bg">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Redução vs Baseline</div>
+                            <div class="card-value"><span id="reduction-percent">15.3</span><span class="card-unit">%</span></div>
+                        </div>
+                        <span class="trend-badge trend-positive">+12.5%</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Meta Anual</div>
+                            <div class="card-value"><span id="annual-target">{{ emissions.annual_co2 - 1500 }}</span><span class="card-unit">tCO2</span></div>
+                        </div>
+                        <span class="trend-badge trend-positive">+92%</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label"><span>Progresso</span><span>92%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 92%; background-color: var(--primary);"></div></div>
+                    </div>
+                </div>
+                <div class="card" style="background: linear-gradient(135deg, #e0e7ff, #c7d2fe);">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">Eficiência</div>
+                            <div class="card-value"><span>A</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 mb-8">
+                <div class="chart-container">
+                    <h3>Emissões Mensais de CO2</h3>
+                    <canvas id="monthlyChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Estratégias de Redução</h3>
+                    <canvas id="strategiesChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container gradient-bg mb-8">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3>Previsões de IA</h3>
+                    <span class="badge" style="background-color: #dbeafe; color: #1e40af;">Inteligência Artificial</span>
+                </div>
+                <div class="forecast-grid">
+                    <div class="forecast-card">
+                        <h4>Próximo Mês</h4>
+                        <p class="forecast-value" style="color: var(--primary);">720 tCO2</p>
+                        <p style="font-size: 0.875rem; color: var(--gray-500); margin-top: 0.5rem;">Confiança: 92%</p>
+                    </div>
+                    <div class="forecast-card">
+                        <h4>Próximo Trimestre</h4>
+                        <p class="forecast-value" style="color: var(--success);">2050 tCO2</p>
+                        <p style="font-size: 0.875rem; color: var(--gray-500); margin-top: 0.5rem;">Confiança: 88%</p>
+                    </div>
+                    <div class="forecast-card">
+                        <h4>Meta Anual</h4>
+                        <p class="forecast-value" style="color: #8b5cf6;">6800 tCO2</p>
+                        <div class="progress-container" style="margin-top: 0.75rem;">
+                            <div class="progress-label"><span>Progresso</span><span>78%</span></div>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 78%; background-color: #8b5cf6;"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Dados em Tempo Real</h3>
+                <canvas id="realtimeChart"></canvas>
+                <div class="realtime-grid" id="realtime-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
